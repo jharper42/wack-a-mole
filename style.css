@@ -24,10 +24,11 @@
 {
     grid-column: 1/-1;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-around;
     flex-direction: column;
     background-color: #0b0b36;
+    color: #ffffff
 }
 .wrapper-div > button 
 {
@@ -47,10 +48,9 @@
 {
     background-color: rgb(41, 47, 51, 0.2);
 }
-.mole
-{
+.mole {
     height: 50px;
     width: 50px;
     border-radius: 25px;
-    background-color: #ad5abf;
+    background-color: rgb(41, 47, 51, .7);
 }

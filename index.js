@@ -3,34 +3,86 @@ const mole_color = '#ad5abf'
 
 class Button
 {
-    constructor(button)
+    constructor(button, board, mole)
     {
-        this.showing = true
         this.button = button
+        this.board = board
+        this.mole = mole
         this.button.addEventListener('click', () => {
-                this.toggleButton()
+            this.check_wacked()
         })
     }
-    toggleButton()
+    check_wacked()
     {
-        if ( this.showing )
+        if (this.mole._location == parseInt(this.button.innerText))
         {
-            this.button.children[0].style.backgroundColor=button_color
+            this.board.update()
+            this.board.get_board().innerText = this.board.get_score()
         }
-        else
-        {
-            this.button.children[0].style.backgroundColor=mole_color
-        }
-        this.showing = this.showing^1
+
     }
 
     
 }
 
+class Mole {
+    constructor(losButtons)
+    {
+        this._location = 5
+        this.buttons = losButtons
+    }
+    location()
+    {
+        return this._location
+    }
+    update_location()
+    { 
+        this._location = Math.floor(Math.random() * 9 + 1)
+        this.buttons.forEach(button => {
+            
+            if (this._location == parseInt(button.innerText)) {
+                button.children[0].style.backgroundColor = mole_color
+            }
+            else
+            {
+                button.children[0].style.backgroundColor = button_color               
+            }
+                
+        })
+    }
+}
+
+class ScoreBoard {
+    constructor(board)
+    {
+        this.score = 0
+        this.board = board
+    }
+    update()
+    {
+        this.score += 1
+    }
+    get_score()
+    {
+        return this.score
+    }
+    get_board()
+    {
+        return this.board
+    }
+}
+
 const bArray = []
-const elButtons = document.querySelectorAll('[data-button]')
+const losButtons = document.querySelectorAll('[data-button]')
+const board = document.querySelector('[data-score-board]')
+const score_board = new ScoreBoard(board)
+const elMole = new Mole(losButtons)
 console.log("making the buttons")
-console.log(elButtons)
-elButtons.forEach(button => {
-    bArray.push(new Button(button))
+console.log(losButtons)
+losButtons.forEach(button => {
+    bArray.push(new Button(button, score_board, elMole))
 })
+
+setInterval(function () {
+    elMole.update_location()
+}, 1000)
